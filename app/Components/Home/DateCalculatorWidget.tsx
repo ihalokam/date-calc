@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
     getDateDifference,
     shiftDate,
@@ -15,6 +15,16 @@ type Tab = "between" | "shift" | "shortcuts";
 
 const todayISO = () => new Date().toISOString().slice(0, 10);
 const parseISO = (v: string) => new Date(`${v}T00:00:00`);
+
+const getShareUrl = (params: Record<string, string>) => {
+    if (typeof window === "undefined") return "";
+    const url = new URL(window.location.href);
+    url.search = ""; // clear current search params
+    Object.entries(params).forEach(([key, val]) => {
+        url.searchParams.set(key, val);
+    });
+    return url.toString();
+};
 
 export default function DateCalculatorWidget() {
     const [tab, setTab] = useState<Tab>("between");
@@ -37,6 +47,90 @@ export default function DateCalculatorWidget() {
     const [shortcutAmount, setShortcutAmount] = useState(30);
     const [shortcutUnit, setShortcutUnit] = useState<ShortcutUnit>("days");
     const [shortcutDirection, setShortcutDirection] = useState<1 | -1>(1);
+
+    // URL Query Parameter Initializer
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        const params = new URLSearchParams(window.location.search);
+
+        // Tab detection
+        const urlTab = params.get("tab");
+        if (urlTab === "between" || urlTab === "shift" || urlTab === "shortcuts") {
+            setTab(urlTab);
+        } else if (params.has("start") || params.has("end")) {
+            setTab("between");
+        } else if (params.has("base") || params.has("amount") || params.has("unit")) {
+            setTab("shift");
+        }
+
+        // "Days between" values
+        const urlStart = params.get("start");
+        const urlEnd = params.get("end");
+        if (urlStart) setStart(urlStart);
+        if (urlEnd) setEnd(urlEnd);
+
+        // "Add / subtract" values
+        const urlBase = params.get("base");
+        const urlAmount = params.get("amount");
+        const urlUnit = params.get("unit");
+        const urlDir = params.get("dir");
+
+        if (urlBase) setBaseDate(urlBase);
+        if (urlAmount) {
+            const parsedAmount = parseInt(urlAmount, 10);
+            if (!isNaN(parsedAmount)) {
+                if (urlTab === "shortcuts") {
+                    setShortcutAmount(parsedAmount);
+                } else {
+                    setAmount(parsedAmount);
+                }
+            }
+        }
+        if (urlUnit) {
+            if (urlTab === "shortcuts") {
+                if (urlUnit === "days" || urlUnit === "weeks" || urlUnit === "months") {
+                    setShortcutUnit(urlUnit as ShortcutUnit);
+                }
+            } else {
+                if (urlUnit === "days" || urlUnit === "weeks" || urlUnit === "months" || urlUnit === "years") {
+                    setUnit(urlUnit as DateUnit);
+                }
+            }
+        }
+        if (urlDir) {
+            const parsedDir = parseInt(urlDir, 10);
+            if (parsedDir === 1 || parsedDir === -1) {
+                if (urlTab === "shortcuts") {
+                    setShortcutDirection(parsedDir as 1 | -1);
+                } else {
+                    setDirection(parsedDir as 1 | -1);
+                }
+            }
+        }
+    }, []);
+
+    const betweenShareUrl = useMemo(() => {
+        return getShareUrl({ tab: "between", start, end });
+    }, [start, end]);
+
+    const shiftShareUrl = useMemo(() => {
+        return getShareUrl({
+            tab: "shift",
+            base: baseDate,
+            amount: amount.toString(),
+            unit,
+            dir: direction.toString(),
+        });
+    }, [baseDate, amount, unit, direction]);
+
+    const shortcutShareUrl = useMemo(() => {
+        return getShareUrl({
+            tab: "shortcuts",
+            amount: shortcutAmount.toString(),
+            unit: shortcutUnit,
+            dir: shortcutDirection.toString(),
+        });
+    }, [shortcutAmount, shortcutUnit, shortcutDirection]);
 
     const diff = useMemo(() => {
         try {
@@ -136,7 +230,7 @@ export default function DateCalculatorWidget() {
 
                                 <ActionRow
                                     onCopy={() => handleCopy(`${diff.totalDays} days between ${start} and ${end}`)}
-                                    shareUrl={`/days-between-two-dates?start=${start}&end=${end}`}
+                                    shareUrl={betweenShareUrl}
                                 />
                             </>
                         )}
@@ -194,7 +288,7 @@ export default function DateCalculatorWidget() {
                                 <ResultCard big={formatLong(shifted)} small={null} />
                                 <ActionRow
                                     onCopy={() => handleCopy(formatLong(shifted))}
-                                    shareUrl={`/add-subtract-date?base=${baseDate}&amount=${amount}&unit=${unit}&dir=${direction}`}
+                                    shareUrl={shiftShareUrl}
                                 />
                             </>
                         )}
@@ -219,8 +313,8 @@ export default function DateCalculatorWidget() {
                                         setShortcutDirection(1);
                                     }}
                                     className={`rounded-lg border px-3 py-2 text-center text-sm font-medium ${shortcutAmount === n && shortcutUnit === "days" && shortcutDirection === 1
-                                            ? "border-neutral-900 bg-neutral-900 text-white"
-                                            : "border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50"
+                                        ? "border-neutral-900 bg-neutral-900 text-white"
+                                        : "border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50"
                                         }`}
                                 >
                                     +{n}d
@@ -237,8 +331,8 @@ export default function DateCalculatorWidget() {
                                         setShortcutDirection(-1);
                                     }}
                                     className={`rounded-lg border px-3 py-2 text-center text-sm font-medium ${shortcutAmount === n && shortcutUnit === "days" && shortcutDirection === -1
-                                            ? "border-neutral-900 bg-neutral-900 text-white"
-                                            : "border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50"
+                                        ? "border-neutral-900 bg-neutral-900 text-white"
+                                        : "border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50"
                                         }`}
                                 >
                                     &minus;{n}d
@@ -289,7 +383,7 @@ export default function DateCalculatorWidget() {
                                 <ResultCard big={formatLong(shortcutResult)} small={null} />
                                 <ActionRow
                                     onCopy={() => handleCopy(formatLong(shortcutResult))}
-                                    shareUrl={`/days-from-today/${shortcutAmount}?unit=${shortcutUnit}&dir=${shortcutDirection}`}
+                                    shareUrl={shortcutShareUrl}
                                 />
                             </>
                         )}
@@ -315,8 +409,8 @@ function TabButton({
             aria-selected={active}
             onClick={onClick}
             className={`rounded-t-lg px-3 py-2 text-sm font-medium transition-colors ${active
-                    ? "border-b-2 border-neutral-900 text-neutral-900"
-                    : "text-neutral-500 hover:text-neutral-700"
+                ? "border-b-2 border-neutral-900 text-neutral-900"
+                : "text-neutral-500 hover:text-neutral-700"
                 }`}
         >
             {children}
@@ -403,20 +497,35 @@ function StatChip({ label, value }: { label: string; value: string }) {
 }
 
 function ActionRow({ onCopy, shareUrl }: { onCopy: () => void; shareUrl: string }) {
+    const [copiedResult, setCopiedResult] = useState(false);
+    const [copiedLink, setCopiedLink] = useState(false);
+
+    const handleCopyResult = () => {
+        onCopy();
+        setCopiedResult(true);
+        setTimeout(() => setCopiedResult(false), 2000);
+    };
+
+    const handleCopyLink = () => {
+        navigator.clipboard?.writeText(shareUrl).catch(() => { });
+        setCopiedLink(true);
+        setTimeout(() => setCopiedLink(false), 2000);
+    };
+
     return (
         <div className="mt-4 flex gap-2">
             <button
-                onClick={onCopy}
-                className="flex-1 rounded-lg border border-neutral-200 py-2 text-sm font-medium hover:bg-neutral-50"
+                onClick={handleCopyResult}
+                className="flex-1 rounded-lg border border-neutral-200 py-2.5 text-center text-sm font-medium transition-all hover:bg-neutral-50 active:scale-95 focus:outline-none"
             >
-                Copy result
+                {copiedResult ? "Copied!" : "Copy result"}
             </button>
-            <a
-                href={shareUrl}
-                className="flex-1 rounded-lg border border-neutral-200 py-2 text-center text-sm font-medium hover:bg-neutral-50"
+            <button
+                onClick={handleCopyLink}
+                className="flex-1 rounded-lg border border-neutral-200 py-2.5 text-center text-sm font-medium transition-all hover:bg-neutral-50 active:scale-95 focus:outline-none"
             >
-                Share link
-            </a>
+                {copiedLink ? "Link copied!" : "Share link"}
+            </button>
         </div>
     );
 }
