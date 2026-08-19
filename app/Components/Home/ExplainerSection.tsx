@@ -22,14 +22,8 @@ export default function ExplainerSection() {
                 <p>
                     Business day counts exclude Saturdays and Sundays by default. For
                     calculations that also need to exclude public holidays for a
-                    specific country, use the{" "}
-                    <a
-                        href="/business-days-calculator"
-                        className="text-neutral-900 underline underline-offset-2"
-                    >
-                        business days calculator
-                    </a>
-                    .
+                    specific country, use the business days calculator.
+
                 </p>
             </div>
         </section>
