@@ -4,6 +4,7 @@ import Hero from "@/app/Components/Home/Hero";
 import ToolsGrid from "@/app/Components/Home/ToolsGrid";
 import ExplainerSection from "@/app/Components/Home/ExplainerSection";
 import FaqSection, { FAQS } from "@/app/Components/Home/FaqSection";
+import Feedback from "@/app/Components/Home/Feedback";
 import Navbar from "@/app/Components/HeaderNFooter/Navbar";
 import Footer from "@/app/Components/HeaderNFooter/Footer";
 
@@ -57,6 +58,7 @@ export default function HomePage() {
 
       <ExplainerSection />
       <ToolsGrid />
+      <Feedback />
       <FaqSection />
       <Footer />
     </main>
