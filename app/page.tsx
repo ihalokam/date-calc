@@ -9,9 +9,9 @@ import Navbar from "@/app/Components/HeaderNFooter/Navbar";
 import Footer from "@/app/Components/HeaderNFooter/Footer";
 
 export const metadata: Metadata = {
-  title: "Date Calculator — Days Between Two Dates, Add or Subtract",
+  title: "Date Calculator — Days Between Two Dates, Add or Subtract days from a date.",
   description:
-    "Free date calculator. Find the number of days between two dates, add or subtract days/weeks/months/years from a date, or jump to common shortcuts like 30, 60, or 90 days from today.",
+    "Calculate how many days, weeks, months and years between two dates. Add or subtract days, weeks, months and years from a date.",
   alternates: { canonical: "https://datecalculator.site/" },
 };
 
