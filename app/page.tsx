@@ -7,6 +7,7 @@ import FaqSection, { FAQS } from "@/app/Components/Home/FaqSection";
 import Feedback from "@/app/Components/Home/Feedback";
 import Navbar from "@/app/Components/HeaderNFooter/Navbar";
 import Footer from "@/app/Components/HeaderNFooter/Footer";
+import FeaturesSection from "@/app/Components/Home/Featuressection";
 
 export const metadata: Metadata = {
   title: "Date Calculator — Days Between Two Dates, Add or Subtract days from a date.",
@@ -57,6 +58,7 @@ export default function HomePage() {
       </div>
 
       <ExplainerSection />
+      <FeaturesSection />
       <ToolsGrid />
       <Feedback />
       <FaqSection />
