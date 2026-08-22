@@ -118,7 +118,7 @@ export default function DateCalculatorWidget() {
                             </Field>
                         </div>
 
-                        {diff && (
+                        {mounted && diff ? (
                             <>
                                 <ResultCard
                                     big={`${diff.totalDays.toLocaleString()} days`}
@@ -150,6 +150,8 @@ export default function DateCalculatorWidget() {
                                     shareUrl={`/days-between-two-dates?start=${start}&end=${end}`}
                                 />
                             </>
+                        ) : (
+                            <ResultSkeleton withStatChips />
                         )}
                     </section>
                 )}
@@ -200,7 +202,7 @@ export default function DateCalculatorWidget() {
                             </DirectionButton>
                         </div>
 
-                        {shifted && (
+                        {mounted && shifted ? (
                             <>
                                 <ResultCard big={formatLong(shifted)} small={null} />
                                 <ActionRow
@@ -208,6 +210,8 @@ export default function DateCalculatorWidget() {
                                     shareUrl={`/add-subtract-date?base=${baseDate}&amount=${amount}&unit=${unit}&dir=${direction}`}
                                 />
                             </>
+                        ) : (
+                            <ResultSkeleton />
                         )}
                     </section>
                 )}
@@ -374,6 +378,38 @@ function ResultCard({ big, small }: { big: string; small: React.ReactNode }) {
     );
 }
 
+/** Placeholder matching ResultCard + (optional stat chips) + ActionRow's
+ *  real height, shown until real "today"-derived dates are set client-side
+ *  after mount. Without this, the result appearing a moment later shoves
+ *  the content below it down the page — a real, measurable layout shift. */
+function ResultSkeleton({ withStatChips = false }: { withStatChips?: boolean }) {
+    return (
+        <div aria-hidden="true">
+            <div className="mt-5 animate-pulse rounded-xl bg-neutral-50 px-6 py-5 text-center">
+                <div className="mx-auto h-3.5 w-12 rounded bg-neutral-200" />
+                <div className="mx-auto mt-2 h-9 w-28 rounded bg-neutral-200" />
+                <div className="mx-auto mt-3 h-6 w-40 rounded-full bg-neutral-200" />
+            </div>
+
+            {withStatChips && (
+                <div className="mt-4 grid animate-pulse grid-cols-3 gap-3">
+                    {[0, 1, 2].map((i) => (
+                        <div key={i} className="rounded-lg bg-neutral-50 px-3 py-2.5">
+                            <div className="mx-auto h-3 w-14 rounded bg-neutral-200" />
+                            <div className="mx-auto mt-1.5 h-4 w-8 rounded bg-neutral-200" />
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            <div className="mt-4 flex animate-pulse gap-2">
+                <div className="h-9 flex-1 rounded-lg bg-neutral-100" />
+                <div className="h-9 flex-1 rounded-lg bg-neutral-100" />
+            </div>
+        </div>
+    );
+}
+
 /** Renders the civil breakdown ("0 yr 2 mo 29 d") and the weeks breakdown
  *  ("12 wks 6 d") as two distinct color-blocked badges, so they read as two
  *  separate facts rather than one run-on string. */
@@ -384,7 +420,7 @@ function BreakdownRow({
 }) {
     const palettes = [
         { bg: "bg-neutral-100", text: "text-neutral-700", label: "text-neutral-500" },
-        { bg: "bg-blue-50", text: "text-blue-800", label: "text-blue-400" },
+        { bg: "bg-blue-50", text: "text-blue-800", label: "text-blue-600" },
     ];
 
     return (
