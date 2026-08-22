@@ -35,7 +35,7 @@ export default function Footer() {
                 <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
                     <FooterColumn title="Tools" links={TOOL_LINKS} />
                     <div>
-                        <h3 className="mb-3 text-xs font-medium uppercase tracking-wide text-neutral-400">
+                        <h3 className="mb-3 text-xs font-medium uppercase tracking-wide text-neutral-500">
                             Company
                         </h3>
                         <ul className="space-y-2">
@@ -64,7 +64,7 @@ export default function Footer() {
                     </div>
                     <FooterColumn title="Legal" links={LEGAL_LINKS} />
                     <div>
-                        <h3 className="mb-3 text-xs font-medium uppercase tracking-wide text-neutral-400">
+                        <h3 className="mb-3 text-xs font-medium uppercase tracking-wide text-neutral-500">
                             About this site
                         </h3>
                         <p className="text-sm leading-relaxed text-neutral-500">
@@ -74,9 +74,9 @@ export default function Footer() {
                     </div>
                 </div>
 
-                <div className="mt-10 flex flex-col gap-2 border-t border-neutral-200 pt-6 text-xs text-neutral-400 sm:flex-row sm:items-center sm:justify-between">
+                <div className="mt-10 flex flex-col gap-2 border-t border-neutral-200 pt-6 text-xs text-neutral-500 sm:flex-row sm:items-center sm:justify-between">
                     <p>&copy; {year} datecalculator.site. All rights reserved.</p>
-                    <Link href="/sitemap.xml" className="hover:text-neutral-600">
+                    <Link href="/sitemap.xml" className="text-neutral-500 hover:text-neutral-700">
                         Sitemap
                     </Link>
                 </div>
@@ -94,7 +94,7 @@ function FooterColumn({
 }) {
     return (
         <div>
-            <h3 className="mb-3 text-xs font-medium uppercase tracking-wide text-neutral-400">
+            <h3 className="mb-3 text-xs font-medium uppercase tracking-wide text-neutral-500">
                 {title}
             </h3>
             <ul className="space-y-2">

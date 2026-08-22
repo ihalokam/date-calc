@@ -3,7 +3,6 @@ import Image from "next/image";
 
 const NAV_LINKS = [
     { href: "/time-duration-calculator", label: "Time Duration" },
-
 ] as const;
 
 export default function Navbar() {
@@ -22,7 +21,7 @@ export default function Navbar() {
                         className="rounded-md"
                         priority
                     />
-                    datecalculator<span className="text-neutral-400">.site</span>
+                    datecalculator<span className="text-neutral-500">.site</span>
                 </Link>
 
                 {/* Desktop nav */}

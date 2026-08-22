@@ -30,7 +30,7 @@ const FEEDBACK = [
     {
         name: "Haashir",
         quote:
-            "I used to mess up our video shoot schedules. My whole team switched to datecalculator.site — everyone's happy now. Santhosham",
+            "I used to mess up our video shoot schedules. My whole team switched to datecalculator.site — everyone's happy now.",
     },
     {
         name: "Zayed",
@@ -179,16 +179,21 @@ export default function Feedback() {
                 </button>
             </div>
 
-            {/* Dots */}
-            <div className="mt-5 flex justify-center gap-1.5">
+            {/* Dots — each button has a 24×24px hit area (WCAG touch-target
+          minimum) even though the visible pill inside stays small. */}
+            <div className="mt-5 flex justify-center gap-0.5">
                 {FEEDBACK.map((item, i) => (
                     <button
                         key={item.name}
                         onClick={() => goTo(i)}
                         aria-label={`Go to testimonial ${i + 1}`}
-                        className={`h-1.5 rounded-full transition-all ${active === i ? "w-5 bg-neutral-900" : "w-1.5 bg-neutral-300"
-                            }`}
-                    />
+                        className="flex h-6 w-6 items-center justify-center"
+                    >
+                        <span
+                            className={`h-1.5 rounded-full transition-all ${active === i ? "w-5 bg-neutral-900" : "w-1.5 bg-neutral-300"
+                                }`}
+                        />
+                    </button>
                 ))}
             </div>
         </section>

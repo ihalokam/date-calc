@@ -16,29 +16,19 @@ type Tab = "between" | "shift" | "shortcuts";
 const todayISO = () => new Date().toISOString().slice(0, 10);
 const parseISO = (v: string) => new Date(`${v}T00:00:00`);
 
-const getShareUrl = (params: Record<string, string>) => {
-    if (typeof window === "undefined") return "";
-    const url = new URL(window.location.href);
-    url.search = ""; // clear current search params
-    Object.entries(params).forEach(([key, val]) => {
-        url.searchParams.set(key, val);
-    });
-    return url.toString();
-};
-
 export default function DateCalculatorWidget() {
     const [tab, setTab] = useState<Tab>("between");
+    const [mounted, setMounted] = useState(false);
 
-    // "Days between" state
-    const [start, setStart] = useState(todayISO());
-    const [end, setEnd] = useState(() => {
-        const d = new Date();
-        d.setDate(d.getDate() + 90);
-        return d.toISOString().slice(0, 10);
-    });
+    // "Days between" state — starts empty; real "today" is only computed
+    // client-side after mount (see effect below) to avoid a server/client
+    // date mismatch if this page is ever served from a build-time or CDN
+    // cache made on a different day than the visitor's "today."
+    const [start, setStart] = useState("");
+    const [end, setEnd] = useState("");
 
     // "Add / subtract" state
-    const [baseDate, setBaseDate] = useState(todayISO());
+    const [baseDate, setBaseDate] = useState("");
     const [amount, setAmount] = useState(30);
     const [unit, setUnit] = useState<DateUnit>("days");
     const [direction, setDirection] = useState<1 | -1>(1);
@@ -48,89 +38,16 @@ export default function DateCalculatorWidget() {
     const [shortcutUnit, setShortcutUnit] = useState<ShortcutUnit>("days");
     const [shortcutDirection, setShortcutDirection] = useState<1 | -1>(1);
 
-    // URL Query Parameter Initializer
     useEffect(() => {
-        if (typeof window === "undefined") return;
-        const params = new URLSearchParams(window.location.search);
+        const today = todayISO();
+        const plus90 = new Date();
+        plus90.setDate(plus90.getDate() + 90);
 
-        // Tab detection
-        const urlTab = params.get("tab");
-        if (urlTab === "between" || urlTab === "shift" || urlTab === "shortcuts") {
-            setTab(urlTab);
-        } else if (params.has("start") || params.has("end")) {
-            setTab("between");
-        } else if (params.has("base") || params.has("amount") || params.has("unit")) {
-            setTab("shift");
-        }
-
-        // "Days between" values
-        const urlStart = params.get("start");
-        const urlEnd = params.get("end");
-        if (urlStart) setStart(urlStart);
-        if (urlEnd) setEnd(urlEnd);
-
-        // "Add / subtract" values
-        const urlBase = params.get("base");
-        const urlAmount = params.get("amount");
-        const urlUnit = params.get("unit");
-        const urlDir = params.get("dir");
-
-        if (urlBase) setBaseDate(urlBase);
-        if (urlAmount) {
-            const parsedAmount = parseInt(urlAmount, 10);
-            if (!isNaN(parsedAmount)) {
-                if (urlTab === "shortcuts") {
-                    setShortcutAmount(parsedAmount);
-                } else {
-                    setAmount(parsedAmount);
-                }
-            }
-        }
-        if (urlUnit) {
-            if (urlTab === "shortcuts") {
-                if (urlUnit === "days" || urlUnit === "weeks" || urlUnit === "months") {
-                    setShortcutUnit(urlUnit as ShortcutUnit);
-                }
-            } else {
-                if (urlUnit === "days" || urlUnit === "weeks" || urlUnit === "months" || urlUnit === "years") {
-                    setUnit(urlUnit as DateUnit);
-                }
-            }
-        }
-        if (urlDir) {
-            const parsedDir = parseInt(urlDir, 10);
-            if (parsedDir === 1 || parsedDir === -1) {
-                if (urlTab === "shortcuts") {
-                    setShortcutDirection(parsedDir as 1 | -1);
-                } else {
-                    setDirection(parsedDir as 1 | -1);
-                }
-            }
-        }
+        setStart(today);
+        setEnd(plus90.toISOString().slice(0, 10));
+        setBaseDate(today);
+        setMounted(true);
     }, []);
-
-    const betweenShareUrl = useMemo(() => {
-        return getShareUrl({ tab: "between", start, end });
-    }, [start, end]);
-
-    const shiftShareUrl = useMemo(() => {
-        return getShareUrl({
-            tab: "shift",
-            base: baseDate,
-            amount: amount.toString(),
-            unit,
-            dir: direction.toString(),
-        });
-    }, [baseDate, amount, unit, direction]);
-
-    const shortcutShareUrl = useMemo(() => {
-        return getShareUrl({
-            tab: "shortcuts",
-            amount: shortcutAmount.toString(),
-            unit: shortcutUnit,
-            dir: shortcutDirection.toString(),
-        });
-    }, [shortcutAmount, shortcutUnit, shortcutDirection]);
 
     const diff = useMemo(() => {
         try {
@@ -230,7 +147,7 @@ export default function DateCalculatorWidget() {
 
                                 <ActionRow
                                     onCopy={() => handleCopy(`${diff.totalDays} days between ${start} and ${end}`)}
-                                    shareUrl={betweenShareUrl}
+                                    shareUrl={`/days-between-two-dates?start=${start}&end=${end}`}
                                 />
                             </>
                         )}
@@ -288,7 +205,7 @@ export default function DateCalculatorWidget() {
                                 <ResultCard big={formatLong(shifted)} small={null} />
                                 <ActionRow
                                     onCopy={() => handleCopy(formatLong(shifted))}
-                                    shareUrl={shiftShareUrl}
+                                    shareUrl={`/add-subtract-date?base=${baseDate}&amount=${amount}&unit=${unit}&dir=${direction}`}
                                 />
                             </>
                         )}
@@ -313,8 +230,8 @@ export default function DateCalculatorWidget() {
                                         setShortcutDirection(1);
                                     }}
                                     className={`rounded-lg border px-3 py-2 text-center text-sm font-medium ${shortcutAmount === n && shortcutUnit === "days" && shortcutDirection === 1
-                                        ? "border-neutral-900 bg-neutral-900 text-white"
-                                        : "border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50"
+                                            ? "border-neutral-900 bg-neutral-900 text-white"
+                                            : "border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50"
                                         }`}
                                 >
                                     +{n}d
@@ -331,8 +248,8 @@ export default function DateCalculatorWidget() {
                                         setShortcutDirection(-1);
                                     }}
                                     className={`rounded-lg border px-3 py-2 text-center text-sm font-medium ${shortcutAmount === n && shortcutUnit === "days" && shortcutDirection === -1
-                                        ? "border-neutral-900 bg-neutral-900 text-white"
-                                        : "border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50"
+                                            ? "border-neutral-900 bg-neutral-900 text-white"
+                                            : "border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50"
                                         }`}
                                 >
                                     &minus;{n}d
@@ -383,7 +300,7 @@ export default function DateCalculatorWidget() {
                                 <ResultCard big={formatLong(shortcutResult)} small={null} />
                                 <ActionRow
                                     onCopy={() => handleCopy(formatLong(shortcutResult))}
-                                    shareUrl={shortcutShareUrl}
+                                    shareUrl={`/days-from-today/${shortcutAmount}?unit=${shortcutUnit}&dir=${shortcutDirection}`}
                                 />
                             </>
                         )}
@@ -409,8 +326,8 @@ function TabButton({
             aria-selected={active}
             onClick={onClick}
             className={`rounded-t-lg px-3 py-2 text-sm font-medium transition-colors ${active
-                ? "border-b-2 border-neutral-900 text-neutral-900"
-                : "text-neutral-500 hover:text-neutral-700"
+                    ? "border-b-2 border-neutral-900 text-neutral-900"
+                    : "text-neutral-500 hover:text-neutral-700"
                 }`}
         >
             {children}
@@ -457,32 +374,41 @@ function ResultCard({ big, small }: { big: string; small: React.ReactNode }) {
     );
 }
 
-/** Renders "2 mo 29 d · 12 wks 6 d" as two visually distinct stat groups
- *  separated by a hairline divider, rather than one long run-on string. */
+/** Renders the civil breakdown ("0 yr 2 mo 29 d") and the weeks breakdown
+ *  ("12 wks 6 d") as two distinct color-blocked badges, so they read as two
+ *  separate facts rather than one run-on string. */
 function BreakdownRow({
     groups,
 }: {
     groups: { value: number; unit: string }[][];
 }) {
+    const palettes = [
+        { bg: "bg-neutral-100", text: "text-neutral-700", label: "text-neutral-500" },
+        { bg: "bg-blue-50", text: "text-blue-800", label: "text-blue-400" },
+    ];
+
     return (
-        <div className="flex items-center justify-center gap-3 text-sm">
-            {groups.map((group, i) => (
-                <span key={i} className="flex items-center gap-3">
-                    {i > 0 && <span className="h-4 w-px bg-neutral-300" aria-hidden="true" />}
-                    <span className="flex gap-2.5">
+        <div className="flex flex-wrap items-center justify-center gap-2">
+            {groups.map((group, i) => {
+                const palette = palettes[i % palettes.length];
+                return (
+                    <span
+                        key={i}
+                        className={`inline-flex items-center gap-2.5 rounded-full px-3.5 py-1.5 ${palette.bg}`}
+                    >
                         {group.map((part, j) => (
                             <span key={j} className="flex items-baseline gap-1">
-                                <span className="tabular-nums font-medium text-neutral-700">
+                                <span className={`tabular-nums text-sm font-medium ${palette.text}`}>
                                     {part.value}
                                 </span>
-                                <span className="text-xs uppercase tracking-wide text-neutral-400">
+                                <span className={`text-xs uppercase tracking-wide ${palette.label}`}>
                                     {part.unit}
                                 </span>
                             </span>
                         ))}
                     </span>
-                </span>
-            ))}
+                );
+            })}
         </div>
     );
 }
@@ -497,35 +423,20 @@ function StatChip({ label, value }: { label: string; value: string }) {
 }
 
 function ActionRow({ onCopy, shareUrl }: { onCopy: () => void; shareUrl: string }) {
-    const [copiedResult, setCopiedResult] = useState(false);
-    const [copiedLink, setCopiedLink] = useState(false);
-
-    const handleCopyResult = () => {
-        onCopy();
-        setCopiedResult(true);
-        setTimeout(() => setCopiedResult(false), 2000);
-    };
-
-    const handleCopyLink = () => {
-        navigator.clipboard?.writeText(shareUrl).catch(() => { });
-        setCopiedLink(true);
-        setTimeout(() => setCopiedLink(false), 2000);
-    };
-
     return (
         <div className="mt-4 flex gap-2">
             <button
-                onClick={handleCopyResult}
-                className="flex-1 rounded-lg border border-neutral-200 py-2.5 text-center text-sm font-medium transition-all hover:bg-neutral-50 active:scale-95 focus:outline-none"
+                onClick={onCopy}
+                className="flex-1 rounded-lg border border-neutral-200 py-2 text-sm font-medium hover:bg-neutral-50"
             >
-                {copiedResult ? "Copied!" : "Copy result"}
+                Copy result
             </button>
-            <button
-                onClick={handleCopyLink}
-                className="flex-1 rounded-lg border border-neutral-200 py-2.5 text-center text-sm font-medium transition-all hover:bg-neutral-50 active:scale-95 focus:outline-none"
+            <a
+                href={shareUrl}
+                className="flex-1 rounded-lg border border-neutral-200 py-2 text-center text-sm font-medium hover:bg-neutral-50"
             >
-                {copiedLink ? "Link copied!" : "Share link"}
-            </button>
+                Share link
+            </a>
         </div>
     );
 }
