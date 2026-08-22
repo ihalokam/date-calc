@@ -234,8 +234,8 @@ export default function DateCalculatorWidget() {
                                         setShortcutDirection(1);
                                     }}
                                     className={`rounded-lg border px-3 py-2 text-center text-sm font-medium ${shortcutAmount === n && shortcutUnit === "days" && shortcutDirection === 1
-                                            ? "border-neutral-900 bg-neutral-900 text-white"
-                                            : "border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50"
+                                        ? "border-neutral-900 bg-neutral-900 text-white"
+                                        : "border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50"
                                         }`}
                                 >
                                     +{n}d
@@ -252,8 +252,8 @@ export default function DateCalculatorWidget() {
                                         setShortcutDirection(-1);
                                     }}
                                     className={`rounded-lg border px-3 py-2 text-center text-sm font-medium ${shortcutAmount === n && shortcutUnit === "days" && shortcutDirection === -1
-                                            ? "border-neutral-900 bg-neutral-900 text-white"
-                                            : "border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50"
+                                        ? "border-neutral-900 bg-neutral-900 text-white"
+                                        : "border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50"
                                         }`}
                                 >
                                     &minus;{n}d
@@ -330,8 +330,8 @@ function TabButton({
             aria-selected={active}
             onClick={onClick}
             className={`rounded-t-lg px-3 py-2 text-sm font-medium transition-colors ${active
-                    ? "border-b-2 border-neutral-900 text-neutral-900"
-                    : "text-neutral-500 hover:text-neutral-700"
+                ? "border-b-2 border-neutral-900 text-neutral-900"
+                : "text-neutral-500 hover:text-neutral-700"
                 }`}
         >
             {children}
@@ -419,7 +419,7 @@ function BreakdownRow({
     groups: { value: number; unit: string }[][];
 }) {
     const palettes = [
-        { bg: "bg-neutral-100", text: "text-neutral-700", label: "text-neutral-600" },
+        { bg: "bg-neutral-100", text: "text-neutral-700", label: "text-neutral-500" },
         { bg: "bg-blue-50", text: "text-blue-800", label: "text-blue-600" },
     ];
 
