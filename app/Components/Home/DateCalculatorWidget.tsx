@@ -419,7 +419,7 @@ function BreakdownRow({
     groups: { value: number; unit: string }[][];
 }) {
     const palettes = [
-        { bg: "bg-neutral-100", text: "text-neutral-700", label: "text-neutral-500" },
+        { bg: "bg-neutral-100", text: "text-neutral-700", label: "text-neutral-600" },
         { bg: "bg-blue-50", text: "text-blue-800", label: "text-blue-600" },
     ];
 

@@ -5,14 +5,8 @@ import Link from "next/link";
 // what gets them indexed quickly once each page ships.
 
 const TOOL_LINKS = [
-    //{ href: "/days-between-two-dates", label: "Days between two dates" },
-    //{ href: "/add-subtract-date", label: "Add or subtract from a date" },
-    //{ href: "/business-days-calculator", label: "Business days calculator" },
-    //{ href: "/age-calculator", label: "Age calculator" },
-    //{ href: "/days-until", label: "Countdown to a date" },
-    //{ href: "/week-number-calculator", label: "Week number calculator" },
-    //{ href: "/day-of-the-week-calculator", label: "Day of the week calculator" },
-    //{ href: "/calendar", label: "Printable calendar" },
+    { href: "/time-duration-calculator", label: "Time duration calculator" },
+
 ] as const;
 
 const COMPANY_LINKS = [
@@ -35,7 +29,7 @@ export default function Footer() {
                 <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
                     <FooterColumn title="Tools" links={TOOL_LINKS} />
                     <div>
-                        <h3 className="mb-3 text-xs font-medium uppercase tracking-wide text-neutral-500">
+                        <h3 className="mb-3 text-xs font-medium uppercase tracking-wide text-neutral-600">
                             Company
                         </h3>
                         <ul className="space-y-2">
@@ -64,19 +58,19 @@ export default function Footer() {
                     </div>
                     <FooterColumn title="Legal" links={LEGAL_LINKS} />
                     <div>
-                        <h3 className="mb-3 text-xs font-medium uppercase tracking-wide text-neutral-500">
+                        <h3 className="mb-3 text-xs font-medium uppercase tracking-wide text-neutral-600">
                             About this site
                         </h3>
-                        <p className="text-sm leading-relaxed text-neutral-500">
+                        <p className="text-sm leading-relaxed text-neutral-600">
                             Free date calculation tools. All calculations run in your
                             browser — no data is collected or stored.
                         </p>
                     </div>
                 </div>
 
-                <div className="mt-10 flex flex-col gap-2 border-t border-neutral-200 pt-6 text-xs text-neutral-500 sm:flex-row sm:items-center sm:justify-between">
+                <div className="mt-10 flex flex-col gap-2 border-t border-neutral-200 pt-6 text-xs text-neutral-600 sm:flex-row sm:items-center sm:justify-between">
                     <p>&copy; {year} datecalculator.site. All rights reserved.</p>
-                    <Link href="/sitemap.xml" className="text-neutral-500 hover:text-neutral-700">
+                    <Link href="/sitemap.xml" className="text-neutral-600 hover:text-neutral-700">
                         Sitemap
                     </Link>
                 </div>
@@ -94,7 +88,7 @@ function FooterColumn({
 }) {
     return (
         <div>
-            <h3 className="mb-3 text-xs font-medium uppercase tracking-wide text-neutral-500">
+            <h3 className="mb-3 text-xs font-medium uppercase tracking-wide text-neutral-600">
                 {title}
             </h3>
             <ul className="space-y-2">
