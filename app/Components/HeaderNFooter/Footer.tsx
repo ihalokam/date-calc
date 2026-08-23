@@ -1,4 +1,6 @@
 import Link from "next/link";
+import type { SVGProps } from "react";
+
 
 // Routes below are linked now even though several pages haven't been built
 // yet (see comments) — having the links live and crawlable from launch is
@@ -18,6 +20,29 @@ const LEGAL_LINKS = [
     { href: "/privacy-policy", label: "Privacy policy" }, // required for AdSense
     { href: "/terms-of-service", label: "Terms of service" }, // strongly recommended
     { href: "/cookie-policy", label: "Cookie policy" }, // covers ad personalization disclosure
+] as const;
+
+const SOCIAL_LINKS = [
+    {
+        href: "https://www.instagram.com/ihalokam_off/",
+        label: "Instagram",
+        Icon: InstagramIcon,
+    },
+    {
+        href: "https://www.facebook.com/people/L-HiTs/100075020381057/",
+        label: "Facebook",
+        Icon: FacebookIcon,
+    },
+    {
+        href: "https://www.youtube.com/@ihalokam",
+        label: "YouTube",
+        Icon: YoutubeIcon,
+    },
+    {
+        href: "https://x.com/deyy_hi",
+        label: "X (Twitter)",
+        Icon: XIcon,
+    },
 ] as const;
 
 export default function Footer() {
@@ -65,6 +90,21 @@ export default function Footer() {
                             Free date calculation tools. All calculations run in your
                             browser — no data is collected or stored.
                         </p>
+                        <ul className="mt-4 flex items-center gap-3">
+                            {SOCIAL_LINKS.map(({ href, label, Icon }) => (
+                                <li key={href}>
+                                    <a
+                                        href={href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={label}
+                                        className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-900"
+                                    >
+                                        <Icon className="h-4 w-4" aria-hidden="true" />
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
 
@@ -104,5 +144,74 @@ function FooterColumn({
                 ))}
             </ul>
         </div>
+    );
+}
+
+function InstagramIcon({ className, ...props }: SVGProps<SVGSVGElement>) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+            {...props}
+        >
+            <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+        </svg>
+    );
+}
+
+function FacebookIcon({ className, ...props }: SVGProps<SVGSVGElement>) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+            {...props}
+        >
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+        </svg>
+    );
+}
+
+function YoutubeIcon({ className, ...props }: SVGProps<SVGSVGElement>) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+            {...props}
+        >
+            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.56 49.56 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+            <polygon points="10 15 15 12 10 9 10 15" />
+        </svg>
+    );
+}
+
+// lucide-react doesn't ship the X (formerly Twitter) glyph, so it's defined
+// inline here to match the size/stroke conventions of the other icons.
+function XIcon({ className, ...props }: SVGProps<SVGSVGElement>) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className={className}
+            {...props}
+        >
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg>
     );
 }
