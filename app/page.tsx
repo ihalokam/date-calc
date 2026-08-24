@@ -10,10 +10,11 @@ import Footer from "@/app/Components/HeaderNFooter/Footer";
 import FeaturesSection from "@/app/Components/Home/Featuressection";
 
 export const metadata: Metadata = {
-  title: "Date Calculator — Days Between Two Dates, Add or Subtract days from a date.",
+  title: "Date Calculator — days calculator",
   description:
     "Calculate how many days, weeks, months and years between two dates. Add or subtract days, weeks, months and years from a date.",
   alternates: { canonical: "https://datecalculator.site/" },
+  keywords: ["date calculator", "days between two dates", "add days to date", "subtract days from date", "day calculator", "calendar calculator", "date calculator between two dates", "date and time calculator"],
 };
 
 // This page is a Server Component: metadata, JSON-LD, and all written
