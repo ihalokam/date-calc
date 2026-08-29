@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EventDetail from "@/app/Components/countdown/EventDetail";
+import Footer from "@/app/Components/HeaderNFooter/Footer";
 
 export const metadata: Metadata = {
     title: "Days Until New Year's Day — Live Countdown to January 1",
@@ -16,12 +17,15 @@ function nextNewYear(): string {
 
 export default function NewYearPage() {
     return (
-        <EventDetail
-            name="New Year's Day"
-            description="January 1 — the start of a fresh year, worldwide."
-            emoji="🎆"
-            tone="sky"
-            targetDate={nextNewYear()}
-        />
+        <>
+            <EventDetail
+                name="New Year's Day"
+                description="January 1 — the start of a fresh year, worldwide."
+                emoji="🎆"
+                tone="sky"
+                targetDate={nextNewYear()}
+            />
+            <Footer />
+        </>
     );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EventDetail from "@/app/Components/countdown/EventDetail";
+import Footer from "@/app/Components/HeaderNFooter/Footer";
 
 export const metadata: Metadata = {
     title: "Days Until Labor Day (US) — Live Countdown",
@@ -24,12 +25,15 @@ function nextLaborDay(): string {
 
 export default function LaborDayPage() {
     return (
-        <EventDetail
-            name="Labor Day (US)"
-            description="First Monday of September — a long weekend for working Americans."
-            emoji="⚒️"
-            tone="sky"
-            targetDate={nextLaborDay()}
-        />
+        <>
+            <EventDetail
+                name="Labor Day (US)"
+                description="First Monday of September — a long weekend for working Americans."
+                emoji="⚒️"
+                tone="sky"
+                targetDate={nextLaborDay()}
+            />
+            <Footer />
+        </>
     );
 }

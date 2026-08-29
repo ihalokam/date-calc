@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EventDetail from "@/app/Components/countdown/EventDetail";
+import Footer from "@/app/Components/HeaderNFooter/Footer";
 
 export const metadata: Metadata = {
     title: "Days Until Father's Day — Live Countdown",
@@ -24,12 +25,15 @@ function nextFathersDay(): string {
 
 export default function FathersDayPage() {
     return (
-        <EventDetail
-            name="Father's Day"
-            description="Third Sunday in June — a day to honour dads everywhere."
-            emoji="👔"
-            tone="blue"
-            targetDate={nextFathersDay()}
-        />
+        <>
+            <EventDetail
+                name="Father's Day"
+                description="Third Sunday in June — a day to honour dads everywhere."
+                emoji="👔"
+                tone="blue"
+                targetDate={nextFathersDay()}
+            />
+            <Footer />
+        </>
     );
 }

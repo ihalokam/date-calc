@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EventDetail from "@/app/Components/countdown/EventDetail";
+import Footer from "@/app/Components/HeaderNFooter/Footer";
 
 export const metadata: Metadata = {
     title: "Days Until Thanksgiving — Live Countdown",
@@ -24,12 +25,15 @@ function nextThanksgiving(): string {
 
 export default function ThanksgivingPage() {
     return (
-        <EventDetail
-            name="Thanksgiving"
-            description="Fourth Thursday of November — turkey, gratitude, and family."
-            emoji="🦃"
-            tone="orange"
-            targetDate={nextThanksgiving()}
-        />
+        <>
+            <EventDetail
+                name="Thanksgiving"
+                description="Fourth Thursday of November — turkey, gratitude, and family."
+                emoji="🦃"
+                tone="orange"
+                targetDate={nextThanksgiving()}
+            />
+            <Footer />
+        </>
     );
 }

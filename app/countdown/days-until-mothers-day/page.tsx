@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EventDetail from "@/app/Components/countdown/EventDetail";
+import Footer from "@/app/Components/HeaderNFooter/Footer";
 
 export const metadata: Metadata = {
     title: "Days Until Mother's Day — Live Countdown",
@@ -24,12 +25,15 @@ function nextMothersDay(): string {
 
 export default function MothersDayPage() {
     return (
-        <EventDetail
-            name="Mother's Day"
-            description="Second Sunday in May — celebrate the mums in your life."
-            emoji="🌸"
-            tone="pink"
-            targetDate={nextMothersDay()}
-        />
+        <>
+            <EventDetail
+                name="Mother's Day"
+                description="Second Sunday in May — celebrate the mums in your life."
+                emoji="🌸"
+                tone="pink"
+                targetDate={nextMothersDay()}
+            />
+            <Footer />
+        </>
     );
 }

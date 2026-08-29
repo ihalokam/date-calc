@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EventDetail from "@/app/Components/countdown/EventDetail";
+import Footer from "@/app/Components/HeaderNFooter/Footer";
 
 export const metadata: Metadata = {
     title: "Days Until Hug Day — Live Countdown to December 4",
@@ -16,12 +17,15 @@ function nextHugDay(): string {
 
 export default function HugDayPage() {
     return (
-        <EventDetail
-            name="Hug Day"
-            description="December 4 — National Hug Day. Spread warmth freely."
-            emoji="🤗"
-            tone="orange"
-            targetDate={nextHugDay()}
-        />
+        <>
+            <EventDetail
+                name="Hug Day"
+                description="December 4 — National Hug Day. Spread warmth freely."
+                emoji="🤗"
+                tone="orange"
+                targetDate={nextHugDay()}
+            />
+            <Footer />
+        </>
     );
 }

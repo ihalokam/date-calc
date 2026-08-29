@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EventDetail from "@/app/Components/countdown/EventDetail";
+import Footer from "@/app/Components/HeaderNFooter/Footer";
 
 export const metadata: Metadata = {
     title: "Days Until Easter — Live Countdown to Easter Sunday",
@@ -30,12 +31,15 @@ function nextEaster(): string {
 
 export default function EasterPage() {
     return (
-        <EventDetail
-            name="Easter"
-            description="Western Easter Sunday — the date shifts every year with the lunar calendar."
-            emoji="🐣"
-            tone="violet"
-            targetDate={nextEaster()}
-        />
+        <>
+            <EventDetail
+                name="Easter"
+                description="Western Easter Sunday — the date shifts every year with the lunar calendar."
+                emoji="🐣"
+                tone="violet"
+                targetDate={nextEaster()}
+            />
+            <Footer />
+        </>
     );
 }

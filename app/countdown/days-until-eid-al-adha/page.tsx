@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EventDetail from "@/app/Components/countdown/EventDetail";
+import Footer from "@/app/Components/HeaderNFooter/Footer";
 
 export const metadata: Metadata = {
     title: "Days Until Eid al-Adha — Live Countdown",
@@ -24,13 +25,16 @@ function nextEidAlAdha(): string {
 
 export default function EidAlAdhaPage() {
     return (
-        <EventDetail
-            name="Eid al-Adha"
-            description="The Festival of Sacrifice, marking the end of Hajj."
-            emoji="🌙"
-            tone="amber"
-            targetDate={nextEidAlAdha()}
-            approximate
-        />
+        <>
+            <EventDetail
+                name="Eid al-Adha"
+                description="The Festival of Sacrifice, marking the end of Hajj."
+                emoji="🌙"
+                tone="amber"
+                targetDate={nextEidAlAdha()}
+                approximate
+            />
+            <Footer />
+        </>
     );
 }

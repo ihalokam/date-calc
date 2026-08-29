@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EventDetail from "@/app/Components/countdown/EventDetail";
+import Footer from "@/app/Components/HeaderNFooter/Footer";
 
 export const metadata: Metadata = {
     title: "Days Until Halloween — Live Countdown to October 31",
@@ -16,12 +17,15 @@ function nextHalloween(): string {
 
 export default function HalloweenPage() {
     return (
-        <EventDetail
-            name="Halloween"
-            description="October 31 — costumes, candy, and all things spooky."
-            emoji="🎃"
-            tone="orange"
-            targetDate={nextHalloween()}
-        />
+        <>
+            <EventDetail
+                name="Halloween"
+                description="October 31 — costumes, candy, and all things spooky."
+                emoji="🎃"
+                tone="orange"
+                targetDate={nextHalloween()}
+            />
+            <Footer />
+        </>
     );
 }

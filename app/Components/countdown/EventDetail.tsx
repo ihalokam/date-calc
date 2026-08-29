@@ -221,7 +221,7 @@ export default function EventDetail({
                 {/* Spacer */}
                 <div className="py-16" />
             </main>
-            <Footer />
+
         </>
     );
 }

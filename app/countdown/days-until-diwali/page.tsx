@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import EventDetail from "@/app/Components/countdown/EventDetail";
-
+import Footer from "@/app/Components/HeaderNFooter/Footer";
 export const metadata: Metadata = {
     title: "Days Until Diwali — Live Countdown to the Festival of Lights",
     description: "How many days until Diwali? Countdown to the Festival of Lights.",
@@ -26,13 +26,16 @@ function nextDiwali(): string {
 
 export default function DiwaliPage() {
     return (
-        <EventDetail
-            name="Diwali"
-            description="The Festival of Lights — diyas, fireworks, sweets, and joy."
-            emoji="🪔"
-            tone="amber"
-            targetDate={nextDiwali()}
-            approximate
-        />
+        <>
+            <EventDetail
+                name="Diwali"
+                description="The Festival of Lights — diyas, fireworks, sweets, and joy."
+                emoji="🪔"
+                tone="amber"
+                targetDate={nextDiwali()}
+                approximate
+            />
+            <Footer />
+        </>
     );
 }

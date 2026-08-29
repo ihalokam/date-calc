@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EventDetail from "@/app/Components/countdown/EventDetail";
+import Footer from "@/app/Components/HeaderNFooter/Footer";
 
 export const metadata: Metadata = {
     title: "Days Until Holi — Live Countdown to the Festival of Colours",
@@ -24,13 +25,16 @@ function nextHoli(): string {
 
 export default function HoliPage() {
     return (
-        <EventDetail
-            name="Holi"
-            description="The Festival of Colours — celebrated across India every spring."
-            emoji="🌈"
-            tone="violet"
-            targetDate={nextHoli()}
-            approximate
-        />
+        <>
+            <EventDetail
+                name="Holi"
+                description="The Festival of Colours — celebrated across India every spring."
+                emoji="🌈"
+                tone="violet"
+                targetDate={nextHoli()}
+                approximate
+            />
+            <Footer />
+        </>
     );
 }

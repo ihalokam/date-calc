@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EventDetail from "@/app/Components/countdown/EventDetail";
+import Footer from "@/app/Components/HeaderNFooter/Footer";
 
 export const metadata: Metadata = {
     title: "Days Until India Independence Day — Live Countdown to August 15",
@@ -16,12 +17,15 @@ function nextIndiaIndependenceDay(): string {
 
 export default function IndiaIndependenceDayPage() {
     return (
-        <EventDetail
-            name="India Independence Day"
-            description="August 15 — India's independence, celebrated since 1947."
-            emoji="🇮🇳"
-            tone="green"
-            targetDate={nextIndiaIndependenceDay()}
-        />
+        <>
+            <EventDetail
+                name="India Independence Day"
+                description="August 15 — India's independence, celebrated since 1947."
+                emoji="🇮🇳"
+                tone="green"
+                targetDate={nextIndiaIndependenceDay()}
+            />
+            <Footer />
+        </>
     );
 }
