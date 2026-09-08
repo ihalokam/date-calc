@@ -459,6 +459,15 @@ function StatChip({ label, value }: { label: string; value: string }) {
 }
 
 function ActionRow({ onCopy, shareUrl }: { onCopy: () => void; shareUrl: string }) {
+    const [copied, setCopied] = useState(false);
+
+    const handleShare = () => {
+        const fullUrl = `${window.location.origin}${shareUrl}`;
+        navigator.clipboard?.writeText(fullUrl).catch(() => { });
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
     return (
         <div className="mt-4 flex gap-2">
             <button
@@ -467,12 +476,12 @@ function ActionRow({ onCopy, shareUrl }: { onCopy: () => void; shareUrl: string 
             >
                 Copy result
             </button>
-            <a
-                href={shareUrl}
-                className="flex-1 rounded-lg border border-neutral-200 py-2 text-center text-sm font-medium hover:bg-neutral-50"
+            <button
+                onClick={handleShare}
+                className="flex-1 rounded-lg border border-neutral-200 py-2 text-sm font-medium hover:bg-neutral-50"
             >
-                Share link
-            </a>
+                {copied ? "Copied!" : "Share link"}
+            </button>
         </div>
     );
 }
