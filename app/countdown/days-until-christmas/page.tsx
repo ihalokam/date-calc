@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import EventDetail from "@/app/Components/countdown/EventDetail";
-import ChristmasContent, { CHRISTMAS_FAQ } from "@/app/Components/countdown/christmas/Christmascontent ";
+
 import Footer from "@/app/Components/HeaderNFooter/Footer";
 export const metadata: Metadata = {
     title: "Days Until Christmas 2025 — Live Countdown to December 25",
@@ -16,22 +16,11 @@ function nextChristmas(): string {
 }
 
 export default function ChristmasPage() {
-    const faqJsonLd = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: CHRISTMAS_FAQ.map((item) => ({
-            "@type": "Question",
-            name: item.q,
-            acceptedAnswer: { "@type": "Answer", text: item.a },
-        })),
-    };
+
 
     return (
         <>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-            />
+
 
             <EventDetail
                 name="Christmas"
@@ -40,8 +29,6 @@ export default function ChristmasPage() {
                 tone="emerald"
                 targetDate={nextChristmas()}
             />
-
-            <ChristmasContent />
             <Footer />
         </>
     );
