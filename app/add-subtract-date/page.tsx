@@ -13,7 +13,8 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     const direction = dir === "-1" ? "subtract" : "add";
     return {
         title: `${direction === "add" ? "Add" : "Subtract"} ${amount} ${unit} ${direction === "add" ? "to" : "from"} ${base ?? "?"} — Date Calculator`,
-        description: `Result of ${direction === "add" ? "adding" : "subtracting"} ${amount} ${unit} ${direction === "add" ? "to" : "from"} ${base}.`,
+        description: `Result of ${direction === "add" ? "adding" : "subtracting"} ${amount} ${unit} ${direction === "add" ? "to" : "from"} ${base ?? "a date"}.`,
+        alternates: { canonical: "https://datecalculator.site/add-subtract-date" },
     };
 }
 

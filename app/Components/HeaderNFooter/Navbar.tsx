@@ -3,7 +3,6 @@ import Image from "next/image";
 
 const NAV_LINKS = [
     { href: "/time-duration-calculator", label: "Time Duration" },
-    { href: "/countdown", label: "Countdowns" },
 ] as const;
 
 export default function Navbar() {

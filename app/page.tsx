@@ -10,11 +10,38 @@ import Footer from "@/app/Components/HeaderNFooter/Footer";
 import FeaturesSection from "@/app/Components/Home/Featuressection";
 
 export const metadata: Metadata = {
-  title: "Date Calculator — days calculator",
+  title: "Date Calculator — Days Between Dates & Add/Subtract Dates",
   description:
-    "Calculate how many days, weeks, months and years between two dates. Add or subtract days, weeks, months and years from a date.",
+    "Calculate the exact number of days, weeks, months, and years between two dates. Add or subtract days, weeks, months, and years from any date. Free, fast, and browser-based.",
   alternates: { canonical: "https://datecalculator.site/" },
-  keywords: ["date calculator", "days between two dates", "add days to date", "subtract days from date", "day calculator", "calendar calculator", "date calculator between two dates", "date and time calculator"],
+  keywords: [
+    "date calculator",
+    "days between two dates",
+    "how many days between two dates",
+    "add days to a date",
+    "subtract days from a date",
+    "day calculator",
+    "calendar calculator",
+    "date difference calculator",
+    "days from today",
+    "90 days from today",
+    "30 days from today",
+  ],
+  openGraph: {
+    title: "Date Calculator — Days Between Dates & Add/Subtract Dates",
+    description:
+      "Calculate the exact number of days, weeks, months, and years between two dates. Add or subtract time from any date. Free and browser-based.",
+    url: "https://datecalculator.site/",
+    siteName: "datecalculator.site",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Date Calculator — Days Between Dates & Add/Subtract Dates",
+    description:
+      "Find the exact days between two dates, or add and subtract time from any date. Free, fast, browser-based.",
+  },
 };
 
 // This page is a Server Component: metadata, JSON-LD, and all written

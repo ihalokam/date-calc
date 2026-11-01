@@ -15,6 +15,21 @@ export const metadata: Metadata = {
     description:
         "Free time duration calculator. Find hours and minutes between two times, calculate net work hours with breaks and overtime for payroll, or check how long until or since a time today.",
     alternates: { canonical: "https://datecalculator.site/time-duration-calculator" },
+    openGraph: {
+        title: "Time Duration Calculator — Hours Between Two Times",
+        description:
+            "Find hours and minutes between two times, calculate work hours with breaks, or check how long until a time. Free and browser-based.",
+        url: "https://datecalculator.site/time-duration-calculator",
+        siteName: "datecalculator.site",
+        type: "website",
+        locale: "en_US",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Time Duration Calculator — Hours Between Two Times",
+        description:
+            "Find hours and minutes between two times. Calculate work hours with breaks and overtime. Free, browser-based.",
+    },
 };
 
 // Server Component: metadata, JSON-LD, and all written content render

@@ -13,7 +13,8 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     const { start, end } = await searchParams;
     return {
         title: `Days between ${start ?? "?"} and ${end ?? "?"} — Date Calculator`,
-        description: `Calculate the number of days, weeks, months and years between ${start} and ${end}.`,
+        description: `Calculate the number of days, weeks, months and years between ${start ?? "a start date"} and ${end ?? "an end date"}.`,
+        alternates: { canonical: "https://datecalculator.site/days-between-two-dates" },
     };
 }
 

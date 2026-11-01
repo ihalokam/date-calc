@@ -1,45 +1,46 @@
 const FAQS = [
     {
-        q: "What is datecalculator.site?",
-        a: "datecalculator.site is a free set of date calculation tools. On this homepage you can find the number of days between two dates, add or subtract time from a date, and jump to common shortcuts like 30, 60, or 90 days from today — all in one place, calculated instantly in your browser.",
-    },
-    {
         q: "How do I calculate the number of days between two dates?",
-        a: "Open the \"Days between\" tab, pick a start date and an end date, and the total number of days appears immediately, along with a breakdown into years, months, and weeks, plus business days and the day of the week each date falls on.",
+        a: "Open the \"Days between\" tab, pick a start date and an end date, and the total number of days appears immediately — broken down into years, months, days, and weeks. Business days and the day of the week for each date are shown automatically.",
     },
     {
-        q: "How do I calculate the number of weeks between two dates?",
-        a: "Use the \"Days between\" tab the same way — the result includes a weeks-and-days breakdown alongside the total day count, so you don't need a separate weeks-only calculator.",
+        q: "What date is 30 days from today?",
+        a: "Use the \"Quick shortcuts\" tab and click the \"30 days\" chip — the result date is calculated from today's date instantly. You can also use the \"Add/subtract\" tab: set today as the start date, enter 30, choose \"days\", and hit Add.",
     },
     {
-        q: "What does the add/subtract date tool do?",
-        a: "The \"Add/subtract\" tab takes a starting date plus a number of days, weeks, months, or years, and gives you the resulting date — useful for things like working out a deadline, a due date, or an anniversary a set amount of time from a known date.",
+        q: "What date is 90 days from today?",
+        a: "Open the \"Quick shortcuts\" tab and click the \"90 days\" chip. The exact date 90 calendar days from today will appear immediately, including the day of the week.",
     },
     {
-        q: "What does the quick shortcuts tool do?",
-        a: "The \"Quick shortcuts\" tab gives you one-click answers for common intervals like 30, 60, or 90 days from today, plus a custom field if you need a different number of days, weeks, or months — no need to look up today's date and do the math yourself.",
+        q: "How many days is 3 months?",
+        a: "It depends on which 3 months. Three calendar months can be 89, 90, 91, or 92 days depending on whether February or a 31-day month is included. Use the \"Days between\" tab with your specific start date to get the precise count for your situation.",
     },
     {
-        q: "What makes this date calculator better?",
-        a: "It's fast, accurate across leap years and variable month lengths, and runs entirely in your browser with no data sent to a server. The three tools — days between, add/subtract, and quick shortcuts — cover most real-world date questions from a single page, with extra detail like business days and day-of-week included by default rather than hidden behind extra clicks.",
+        q: "How do I add days to a date?",
+        a: "Open the \"Add/subtract\" tab, enter your starting date, type the number of days you want to add, make sure \"days\" is selected as the unit, and click Add. The resulting date appears immediately, corrected for month lengths and leap years.",
     },
     {
         q: "Does the days-between calculation include the end date?",
-        a: "No. The result is the number of days from the start date up to but not including the end date — the same convention used for lease terms, age, and most legal deadlines. If you need an inclusive count, add one day to the result.",
+        a: "No. The result is the number of days from the start date up to but not including the end date — the same convention used for lease terms, age calculations, and most legal deadlines. If you need an inclusive count, add one day to the result.",
     },
     {
         q: "What's the difference between calendar days and business days?",
-        a: "Calendar days count every day, including weekends. Business days exclude Saturdays and Sundays. Contract deadlines, payment terms, and legal filing windows often specify one or the other explicitly — check the relevant document before assuming.",
+        a: "Calendar days count every day including weekends. Business days exclude Saturdays and Sundays. Contract deadlines, payment terms, and legal filing windows often specify one or the other explicitly — check the relevant document before assuming.",
+    },
+    {
+        q: "How many weeks between two dates?",
+        a: "Use the \"Days between\" tab — the result automatically includes a weeks-and-days breakdown alongside the total day count. For example, 90 days displays as 12 weeks and 6 days.",
     },
     {
         q: "Why does adding one month sometimes change the day of the month?",
-        a: "Months have different lengths. Adding one month to January 31 can't land on February 31, since it doesn't exist — this calculator rolls forward to the last valid day of the target month (February 28, or 29 in a leap year).",
+        a: "Months have different lengths. Adding one month to January 31 can't land on February 31 since it doesn't exist — this calculator rolls forward to the last valid day of the target month (February 28, or 29 in a leap year).",
     },
     {
         q: "Is my date data sent to a server?",
-        a: "No. All calculations run locally in your browser using JavaScript. Nothing about the dates you enter is transmitted or stored.",
+        a: "No. All calculations run locally in your browser using JavaScript. Nothing about the dates you enter is transmitted or stored anywhere.",
     },
 ] as const;
+
 /** Exported so page.tsx can reuse the same data for FAQPage JSON-LD without duplicating content. */
 export { FAQS };
 
