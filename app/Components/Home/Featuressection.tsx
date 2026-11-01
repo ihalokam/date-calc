@@ -1,43 +1,5 @@
+import { format, addDays, differenceInDays } from "date-fns";
 import ScrollReveal from "@/app/Components/shared/Scrollreveal";
-
-const FEATURES = [
-    {
-        tone: "blue" as const,
-        title: "Days Between Two Dates",
-        tagline: "The exact days, weeks, and months between any two dates.",
-        bestFor: ["Contract deadlines", "Age gaps", "Trip planning", "Legal filing windows"],
-        description:
-            "Pick a start date and an end date and get the total day count instantly, broken down into years, months, and days, plus a separate weeks-and-days count. Business days and the day of the week for each date are included by default, not hidden behind an extra click.",
-        example: { input: "Aug 19 → Nov 17, 2026", output: "90 days · 0 yr 2 mo 29 d · 12 wks 6 d" },
-        icon: (
-            <path d="M2 3.5A1 1 0 0 1 3 2.5h10a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-9Z M2 6h12 M5 2v2 M11 2v2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-        ),
-    },
-    {
-        tone: "emerald" as const,
-        title: "Add / Subtract",
-        tagline: "Add or subtract days, weeks, months, or years from any date.",
-        bestFor: ["Due dates", "Anniversaries", "Warranty expiration", "Follow-up reminders"],
-        description:
-            "Enter a starting date, a duration, and a unit, then add or subtract — the resulting date appears instantly. Correctly handles month-length differences, so adding one month to January 31 rolls forward to February 28 (or 29 in a leap year) instead of returning an invalid date.",
-        example: { input: "Aug 19, 2026 + 90 days", output: "Tuesday, November 17, 2026" },
-        icon: (
-            <path d="M8 3v5 M5.5 5.5h5 M5 12h6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-        ),
-    },
-    {
-        tone: "amber" as const,
-        title: "Quick Shortcuts",
-        tagline: "Instant answers for common intervals like 30, 60, or 90 days from today.",
-        bestFor: ["Return policy deadlines", "Escrow & loan terms", "Custom day/week/month offsets"],
-        description:
-            "One-click chips for the most common intervals people search for, plus a custom field for any amount in days, weeks, or months. Results compute instantly from today's date with no page reload — click a preset or type your own and get a real date back immediately.",
-        example: { input: "+90 days from today", output: "Nov 17, 2026 (Tue)" },
-        icon: (
-            <path d="M9 2 4 9h3l-1 5 6-8H9l1-4Z" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-        ),
-    },
-];
 
 const TONE_STYLES: Record<"blue" | "emerald" | "amber", { badge: string; ring: string }> = {
     blue: { badge: "bg-blue-50 text-blue-700", ring: "group-hover:border-blue-200" },
@@ -45,12 +7,83 @@ const TONE_STYLES: Record<"blue" | "emerald" | "amber", { badge: string; ring: s
     amber: { badge: "bg-amber-50 text-amber-700", ring: "group-hover:border-amber-200" },
 };
 
+/** Minimal date breakdown (yrs · mo · d) for the worked example label. */
+function breakdown(start: Date, end: Date) {
+    let y = end.getFullYear() - start.getFullYear();
+    let m = end.getMonth() - start.getMonth();
+    let d = end.getDate() - start.getDate();
+    if (d < 0) { m -= 1; d += new Date(end.getFullYear(), end.getMonth(), 0).getDate(); }
+    if (m < 0) { y -= 1; m += 12; }
+    const totalDays = differenceInDays(end, start);
+    const weeks = Math.floor(totalDays / 7);
+    const remDays = totalDays % 7;
+    return { y, m, d, totalDays, weeks, remDays };
+}
+
 export default function FeaturesSection() {
+    // Compute all example dates server-side so they always reflect "today"
+    const today = new Date();
+    const plus90 = addDays(today, 90);
+    const bk = breakdown(today, plus90);
+
+    const todayFmt = format(today, "MMM d, yyyy");        // e.g. "Nov 1, 2026"
+    const plus90Fmt = format(plus90, "MMM d, yyyy");      // e.g. "Jan 30, 2027"
+    const plus90Long = format(plus90, "EEEE, MMMM d, yyyy"); // e.g. "Friday, January 30, 2027"
+    const plus90Short = format(plus90, "MMM d, yyyy (EEE)"); // e.g. "Jan 30, 2027 (Fri)"
+
+    const FEATURES = [
+        {
+            tone: "blue" as const,
+            title: "Days Between Two Dates",
+            tagline: "The exact days, weeks, and months between any two dates.",
+            bestFor: ["Contract deadlines", "Age gaps", "Trip planning", "Legal filing windows"],
+            description:
+                "Pick a start date and an end date and get the total day count instantly, broken down into years, months, and days, plus a separate weeks-and-days count. Business days and the day of the week for each date are included by default, not hidden behind an extra click.",
+            example: {
+                input: `${todayFmt} → ${plus90Fmt}`,
+                output: `${bk.totalDays} days · ${bk.y} yr ${bk.m} mo ${bk.d} d · ${bk.weeks} wks ${bk.remDays} d`,
+            },
+            icon: (
+                <path d="M2 3.5A1 1 0 0 1 3 2.5h10a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-9Z M2 6h12 M5 2v2 M11 2v2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            ),
+        },
+        {
+            tone: "emerald" as const,
+            title: "Add / Subtract",
+            tagline: "Add or subtract days, weeks, months, or years from any date.",
+            bestFor: ["Due dates", "Anniversaries", "Warranty expiration", "Follow-up reminders"],
+            description:
+                "Enter a starting date, a duration, and a unit, then add or subtract — the resulting date appears instantly. Correctly handles month-length differences, so adding one month to January 31 rolls forward to February 28 (or 29 in a leap year) instead of returning an invalid date.",
+            example: {
+                input: `${todayFmt} + 90 days`,
+                output: plus90Long,
+            },
+            icon: (
+                <path d="M8 3v5 M5.5 5.5h5 M5 12h6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            ),
+        },
+        {
+            tone: "amber" as const,
+            title: "Quick Shortcuts",
+            tagline: "Instant answers for common intervals like 30, 60, or 90 days from today.",
+            bestFor: ["Return policy deadlines", "Escrow & loan terms", "Custom day/week/month offsets"],
+            description:
+                "One-click chips for the most common intervals people search for, plus a custom field for any amount in days, weeks, or months. Results compute instantly from today's date with no page reload — click a preset or type your own and get a real date back immediately.",
+            example: {
+                input: "+90 days from today",
+                output: plus90Short,
+            },
+            icon: (
+                <path d="M9 2 4 9h3l-1 5 6-8H9l1-4Z" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            ),
+        },
+    ];
+
     return (
         <section className="mx-auto max-w-4xl px-4 py-14">
             <div className="mb-9 text-center">
                 <h2 className="text-lg font-medium text-neutral-900">
-                    Our Date Calculator's Features
+                    Our Date Calculator&apos;s Features
                 </h2>
                 <p className="mx-auto mt-1 max-w-md text-sm text-neutral-500">
                     Each mode is built for a different way people actually ask
